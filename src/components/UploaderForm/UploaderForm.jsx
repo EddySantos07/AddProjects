@@ -19,7 +19,7 @@ const UploaderForm = () => {
 
         <input
           type="submit"
-          value="submit"
+          value="Submit"
           className="btn btn-primary btn-block"
         />
 
