@@ -9,7 +9,11 @@ class View extends React.Component {
   }
 
   render() {
-    return <AppTitle />;
+    return (
+      <>
+        <AppTitle />
+      </>
+    );
   }
 }
 
