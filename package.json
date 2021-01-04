@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --mode development --watch",
+    "server": "nodemon ./backend"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,7 @@
     "babel": "^6.23.0",
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",
+    "nodemon": "^2.0.6",
     "webpack": "^5.11.1",
     "webpack-cli": "^4.3.1"
   },
@@ -33,8 +36,13 @@
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "gridfs-stream": "^1.1.1",
+    "method-override": "^3.0.0",
     "mongoose": "^5.11.9",
+    "multer": "^1.4.2",
+    "multer-gridfs-storage": "^4.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0"
