@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import AppTitle from "./AppTitle";
 
 class View extends React.Component {
   constructor() {
@@ -8,18 +9,8 @@ class View extends React.Component {
   }
 
   render() {
-    return (
-      <>
-        <div className="container"> 
-            <div className="row">
-                <div className="col-md-6 m-auto " > 
-                    <h1 className="text-center display-4 my-4" > Mongo File Uploads </h1>
-                </div>
-            </div>
-        </div>
-      </>
-    );
+    return <AppTitle />;
   }
 }
 
-export default View; 
+export default View;
