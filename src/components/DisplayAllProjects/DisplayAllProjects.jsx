@@ -12,6 +12,7 @@ const DisplayAllProjects = () => {
         axios.get('/GetAllProjects')
         .then((data) => {
             console.log(data);
+            
         })
         .catch((err) => {
             console.log(err);

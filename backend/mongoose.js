@@ -95,9 +95,31 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
-//------
+//------ get projects in db
+
+let findProjects = () => {
+ return  new Promise( (resolve , reject) => {
+  
+  gfs.files.find().toArray( (err, files) => {
+
+  console.log(files, 'files?')
+  //check if files exist
+
+  if (err) {
+    console.log(err);
+  }
+
+  if ( !files || files.length === 0 ) {
+    return resolve(false);
+  }
+
+  return resolve(files);
+})
+})
+}
 
 
 
-module.exports.Check_If_File_And_Table_Is_Valid = Check_If_File_And_Table_Is_Valid
+module.exports.Check_If_File_And_Table_Is_Valid = Check_If_File_And_Table_Is_Valid;
 module.exports.upload = upload;
+module.exports.findProjects = findProjects;
