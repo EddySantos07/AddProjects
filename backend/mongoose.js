@@ -42,7 +42,6 @@ const Check_If_File_And_Table_Is_Valid = (fileName, tableName) => {
 };
 
 
-
 //create storage obj;
 const storage = new GridFsStorage({
   // we use our own url to connect to our mongoDB
@@ -57,7 +56,6 @@ const storage = new GridFsStorage({
           console.log("rejected?");
           return reject(err);
         }
-        console.log(req.body);
 
         let bucket_name = req.body.text;
         const filename = buf.toString("hex") + path.extname(file.originalname);
@@ -74,23 +72,38 @@ const storage = new GridFsStorage({
           bucketName: `${bucket_name}`,
         };
 
-        // if (CheckIfFileIsValid === false) {
-        //   console.log('rejected')
-        //   // return false;
-   
-        //   //then res. redirect and pop an err 
-        // } else if ( CheckIfFileIsValid === true ) {
-
-        //   console.log("resolved?");
-        //   resolve(fileInfo);
-        // }
-
         resolve(fileInfo);
       });
     });
   },
 });
-const upload = multer({ storage });
+
+const fileFilter = (req, file, callBack) => {
+
+  //get extension 
+  let extension = path.extname(file.originalname);
+  // get text inputed / table name
+  let collection = req.body.text;
+
+  //if the file is not a picture give back err;
+  if(extension !== '.png' && extension !== '.jpg' && extension !== '.gif' && extension !== '.jpeg') {
+    return callBack(new Error('Only images are allowed'))
+  }
+  
+  //check if request has text greater than a length of 0 for the next update make it to where
+  // to check if any table name matches any one of the text names else err or suggest a table name
+
+  if ( collection.length  < 1 ) {
+    return callBack(new Error('Please input collection name'))
+  }
+
+  callBack(null, true)
+}
+
+const upload = multer({ 
+  storage: storage, 
+  fileFilter: fileFilter
+ });
 
 module.exports.Check_If_File_And_Table_Is_Valid = Check_If_File_And_Table_Is_Valid
 module.exports.upload = upload;

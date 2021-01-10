@@ -21,6 +21,11 @@ const app = express();
 
 //middle ware
 
+// adds body for requests to make things easier using multer
+// const busboy = require('busboy')
+// const busboy = require('express-busboy');
+// busboy.extend(app);
+
 // telling method override that we want to make a query string in order to make a delete req
 app.use(methodOverride("_method"));
 
@@ -39,15 +44,26 @@ app.listen(port, () => {
 // route to POST to /upload
 //desc uploads file to mongo
 
-app.post('/', (req, res) => {
-  console.log('redirected')
-  res.send(403)
-})
+
 // upload.single('file') 
 
-app.post("/validationForm",(req, res ) => {
+app.post("/validationForm",  upload.single('file')  ,(req, res) => {
 
+  //grab the original name to check if its an actual file
+  //then grab the name of the bucket and validate
+  console.log( req.body.text, 'REQ TEXT')
+  console.log(req.body, 'REQ BODY')
+  console.log(req.body.files, 'BODY FILE')
+  console.log(req.file, 'REQ FILE')
 
+  res.redirect('/')
+  res.end();
 });
+
+app.post('/uploadFile', upload.single('file') , (req, res) => {
+  console.log('redirected')
+  res.json({file: req.file})
+  res.end();
+})
 
 /////////////////////
