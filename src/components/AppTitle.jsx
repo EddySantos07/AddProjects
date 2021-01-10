@@ -1,5 +1,6 @@
 import React from "react";
 import UploaderForm from "./UploaderForm/UploaderForm";
+import DisplayAllProjects from './DisplayAllProjects/DisplayAllProjects';
 
 const AppTitle = () => {
   return (
@@ -12,6 +13,8 @@ const AppTitle = () => {
           </div>
         </div>
       </div>
+
+      <DisplayAllProjects/>
     </>
   );
 };

@@ -5,7 +5,6 @@ const crypto = require("crypto");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage");
 const Grid = require("gridfs-stream");
-const methodOverride = require("method-override");
 
 const mongoURI = `mongodb+srv://Eddy:${process.env.mongoURIPass}@showcase.jaglz.mongodb.net/${process.env.mongoURIDBName}?retryWrites=true&w=majority`;
 
@@ -31,7 +30,7 @@ connection.once("open", () => {
   console.log('connected!')
 });
 
-
+///// -----------
 const Check_If_File_And_Table_Is_Valid = (fileName, tableName) => {
   if (tableName.length === 0 || fileName.length === 0) {
 
@@ -53,19 +52,11 @@ const storage = new GridFsStorage({
       // crypto.randomBytes is used to make a random string of 16 chars
       crypto.randomBytes(16, (err, buf) => {
         if (err) {
-          console.log("rejected?");
           return reject(err);
         }
 
         let bucket_name = req.body.text;
         const filename = buf.toString("hex") + path.extname(file.originalname);
-
-        console.log(filename, "File name?");
-
-        let CheckIfFileIsValid = Check_If_File_And_Table_Is_Valid(
-          filename,
-          bucket_name
-        );
 
         const fileInfo = {
           filename: filename,
@@ -79,7 +70,6 @@ const storage = new GridFsStorage({
 });
 
 const fileFilter = (req, file, callBack) => {
-
   //get extension 
   let extension = path.extname(file.originalname);
   // get text inputed / table name
@@ -103,7 +93,11 @@ const fileFilter = (req, file, callBack) => {
 const upload = multer({ 
   storage: storage, 
   fileFilter: fileFilter
- });
+});
+
+//------
+
+
 
 module.exports.Check_If_File_And_Table_Is_Valid = Check_If_File_And_Table_Is_Valid
 module.exports.upload = upload;
