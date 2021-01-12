@@ -2,17 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 const UploaderForm = () => {
-  const [currentFile, setFile] = useState({});
-
-  function handleFile(event) {
-    //grab the file
-    let file = event.target.files[0];
-    // console.log(file, 'fileee');
-
-    //set current File to state
-    setFile({ file: file });
-    // console.log(currentFile, 'current File');
-  }
+  const [currentFile, setFile] = useState();
+  const [currentCollection, setCollection] = useState();
 
   function handleFormSubmit(event) {
     //prevent default action
@@ -23,16 +14,46 @@ const UploaderForm = () => {
 
     let formData = new FormData();
 
-    formData.append("file", file);
+    console.log(text);
     formData.append("text", text);
+    formData.append("file", file);
+
+    // axios.post('https://httpbin.org/anything', formData)
+    // .then( (data) => {
+    //   console.log(data)
+    // })
+    // .catch( (err) => {
+    //   console.log(err)
+    // })
 
     axios
       .post("/validationForm", formData, {
         method: "POST",
+        data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((data) => {
-        console.log(data, "data after callin val form req route");
+        console.log(data.data, "data after callin val form req route");
+
+        let file = data.data.file;
+        let collection = data.data.text;
+
+        // console.log()
+        // function alrt() {
+        //   if (
+        //     (file === undefined && collection === undefined) ||
+        //     (file === "undefined" && collection.length < 1) ||
+        //     (file === undefined && collection.length < 1)
+        //   ) {
+        //     alert("please select a colleciton name and a file!");
+        //   } else if ( file === undefined || collection.length > 0 || file === 'undefined' ) {
+        //     alert(" please select a file ");
+        //   } else if (file === undefined || file === 'undefined' ) {
+        //     alert("please select an img/gif");
+        //   }
+        // }
+
+        // alrt();
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +75,11 @@ const UploaderForm = () => {
             id="text"
             name="text"
             className="form-control"
-            placeholder="Choose Project Table Name"
+            placeholder="Choose Project Collection Name"
+            onChange={(event) => {
+              const { value } = event.target;
+              setCollection(value);
+            }}
           />
 
           <label htmlFor="text"></label>
@@ -64,13 +89,14 @@ const UploaderForm = () => {
 
         <div className=" mb-3">
           <input
-            onChange={(e) => {
-              handleFile(e);
-            }}
             type="file"
             name="file"
             id="file"
             className="border form-control "
+            onChange={(event) => {
+              const file = event.target.files[0];
+              setFile(file);
+            }}
           />
 
           <label htmlFor="file" className=""></label>

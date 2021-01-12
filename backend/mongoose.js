@@ -73,16 +73,18 @@ const storage = new GridFsStorage({
 });
 
 const fileFilter = (req, file, callBack) => {
-
   let extension = path.extname(file.originalname);
   let collection = req.body.text;
+  console.log(req.body, "req body");
 
-  if ( extension === undefined || collection === undefined ) {
-    
+  console.log(extension, "extnsion ", collection, "collection");
+
+  console.log(req.body, "req body2");
+  if (extension === undefined || collection === undefined) {
     req.body.isPicture = false;
     req.body.originalName = file.originalname;
     req.body.fileName = file.originalname;
-    
+
     return callBack(null, false);
   }
 
@@ -92,24 +94,32 @@ const fileFilter = (req, file, callBack) => {
     extension !== ".gif" &&
     extension !== ".jpeg"
   ) {
-
+    req.body.fileName = file.originalname;
+    req.body.originalName = file.originalname;
     req.body.isPicture = false;
     return callBack(null, false);
   }
 
-  if ( collection.length < 1) {
-
+  if (collection.length < 1) {
+    
+    req.body.fileName = file.originalname;
     req.body.originalName = file.originalname;
     req.body.isPicture = true;
+
     return callBack(null, false);
   }
 
+  req.body.fileName = file.originalname;
+  req.body.originalName = file.originalname;
+  req.body.isPicture = true;
+
+  console.log("passed and going into db?");
   callBack(null, true);
 };
 
 const upload = multer({
-  storage: storage,
   fileFilter: fileFilter,
+  storage: storage,
 });
 
 //------ get projects in db
@@ -117,7 +127,6 @@ const upload = multer({
 let findProjects = () => {
   return new Promise((resolve, reject) => {
     gfs.files.find().toArray((err, files) => {
-
       if (err) {
         console.log(err);
       }

@@ -19,8 +19,8 @@ const app = express();
 app.use(methodOverride("_method"));
 
 //
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/../dist"));
 //
 
@@ -30,8 +30,15 @@ app.listen(port, () => {
 });
 
 
+// app.post('/formValid' , upload.single("file") , ( req, res) => {
+//   console.log('form passed')
+//   res.status(200).send(req.body);
+// })
+
 app.post("/validationForm", upload.single("file"), (req, res) => {
 
+
+  console.log(req.body,'req bod')
   let collectionName = req.body.text;
   let fileName = req.body.originalName;
 
@@ -40,18 +47,20 @@ app.post("/validationForm", upload.single("file"), (req, res) => {
     fileName
   );
 
+  console.log(collectionName, fileName)
+
   // if form validation is false
   if (formValidation === false) {
     // then we can pop up an err to the page,
 
     console.log("form validation did not pass");
     res.status(200).send(req.body);
-    return;
   } else {
     // else we have to make a pop up saying file save successful!
     res.status(200).send(req.body);
-    return;
   }
+
+
 });
 
 app.get("/GetAllProjects", async (req, res) => {

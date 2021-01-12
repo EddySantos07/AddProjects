@@ -14,7 +14,7 @@ const AppTitle = () => {
         </div>
       </div>
 
-      <DisplayAllProjects/>
+      {/* <DisplayAllProjects/> */}
     </>
   );
 };
