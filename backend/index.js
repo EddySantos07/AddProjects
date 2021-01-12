@@ -24,58 +24,44 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../dist"));
 //
 
-//declare port
 const port = 5000;
-
-// app is listening on port
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
 
-app.get( '/invalidForm', ( req, res ) => {
-
-  res.end()
-})
 
 app.post("/validationForm", upload.single("file"), (req, res) => {
-  let fileName = req.body.fileName;
+
   let collectionName = req.body.text;
+  let fileName = req.body.originalName;
 
   let formValidation = Check_If_File_And_Table_Is_Valid(
-    fileName,
-    collectionName
+    collectionName,
+    fileName
   );
 
-  console.log(formValidation);
-  console.log(req.body, "req body");
-
   // if form validation is false
-
   if (formValidation === false) {
     // then we can pop up an err to the page,
 
     console.log("form validation did not pass");
-    res.end()
+    res.status(200).send(req.body);
     return;
   } else {
-
     // else we have to make a pop up saying file save successful!
-    res.status(200).send( req.body );
+    res.status(200).send(req.body);
     return;
   }
-
-  
 });
 
 app.get("/GetAllProjects", async (req, res) => {
   try {
     let areThereProjects = await findProjects();
-    console.log(areThereProjects, "are there projects?");
   } catch (err) {
     console.log(err);
   }
-  req.body.test = 'test'
-  res.send(req.body)
+  req.body.test = "test";
+  res.send(req.body);
   res.end();
 });
 

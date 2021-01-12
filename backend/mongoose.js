@@ -33,7 +33,6 @@ connection.once("open", () => {
 
 ///// -----------
 const Check_If_File_And_Table_Is_Valid = (fileName, tableName) => {
-
   if (fileName === undefined || tableName === undefined) {
     return false;
   }
@@ -75,35 +74,34 @@ const storage = new GridFsStorage({
 
 const fileFilter = (req, file, callBack) => {
 
-  console.log('THIS IS FILE')
-
-  //get extension
   let extension = path.extname(file.originalname);
-  // get text inputed / table name
   let collection = req.body.text;
 
-  //if the file is not a picture give back err;
+  if ( extension === undefined || collection === undefined ) {
+    
+    req.body.isPicture = false;
+    req.body.originalName = file.originalname;
+    req.body.fileName = file.originalname;
+    
+    return callBack(null, false);
+  }
+
   if (
     extension !== ".png" &&
     extension !== ".jpg" &&
     extension !== ".gif" &&
     extension !== ".jpeg"
   ) {
-    // return callBack( "Only images are allowed" );
-    // add property to body and say isPicture ? false 
+
     req.body.isPicture = false;
-    return callBack( null, false );
+    return callBack(null, false);
   }
 
-  //check if request has text greater than a length of 0 for the next update make it to where
-  // to check if any table name matches any one of the text names else err or suggest a table name
+  if ( collection.length < 1) {
 
-  if (collection.length < 1) {
-    // return callBack( "Please input collection name" );
-    // add property to body and say isPicture ? true
     req.body.originalName = file.originalname;
     req.body.isPicture = true;
-    return callBack( null, false );
+    return callBack(null, false);
   }
 
   callBack(null, true);
@@ -119,9 +117,6 @@ const upload = multer({
 let findProjects = () => {
   return new Promise((resolve, reject) => {
     gfs.files.find().toArray((err, files) => {
-      // console.log(gfs.files.find());
-      console.log(files, "files?");
-      //check if files exist
 
       if (err) {
         console.log(err);
@@ -130,10 +125,6 @@ let findProjects = () => {
       if (!files || files.length === 0) {
         return resolve(false);
       }
-
-      // if (files.contentType === 'image/jpeg' || files.conentType === 'img/png' ) {
-
-      // }
 
       return resolve(files);
     });
