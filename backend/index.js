@@ -8,8 +8,8 @@ require("dotenv").config();
 
 // get funcs from mongoose
 const { upload } = require("./mongoose");
-const { Check_If_File_And_Table_Is_Valid } = require('./mongoose');
-const { findProjects } = require('./mongoose');
+const { Check_If_File_And_Table_Is_Valid } = require("./mongoose");
+const { findProjects } = require("./mongoose");
 //
 const app = express();
 
@@ -32,28 +32,51 @@ app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
 
+app.get( '/invalidForm', ( req, res ) => {
 
-app.post("/validationForm",  upload.single('file')  ,(req, res) => {
+  res.end()
+})
 
-  //redirect after successful upload
-  res.redirect('/')
+app.post("/validationForm", upload.single("file"), (req, res) => {
+  let fileName = req.body.fileName;
+  let collectionName = req.body.text;
+
+  let formValidation = Check_If_File_And_Table_Is_Valid(
+    fileName,
+    collectionName
+  );
+
+  console.log(formValidation);
+  console.log(req.body, "req body");
+
+  // if form validation is false
+
+  if (formValidation === false) {
+    // then we can pop up an err to the page,
+
+    console.log("form validation did not pass");
+    res.end()
+    return;
+  } else {
+
+    // else we have to make a pop up saying file save successful!
+    res.status(200).send( req.body );
+    return;
+  }
+
   
-  //end response
-  res.end();
 });
 
-app.get( '/GetAllProjects', async (req, res) => {
-
+app.get("/GetAllProjects", async (req, res) => {
   try {
-    let areThereProjects = await findProjects()
-    console.log(areThereProjects, 'are there projects?')
-
+    let areThereProjects = await findProjects();
+    console.log(areThereProjects, "are there projects?");
   } catch (err) {
     console.log(err);
   }
-
+  req.body.test = 'test'
+  res.send(req.body)
   res.end();
-
-})
+});
 
 /////////////////////
