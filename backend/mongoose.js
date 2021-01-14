@@ -101,7 +101,6 @@ const fileFilter = (req, file, callBack) => {
   }
 
   if (collection.length < 1) {
-    
     req.body.fileName = file.originalname;
     req.body.originalName = file.originalname;
     req.body.isPicture = true;
@@ -140,6 +139,43 @@ let findProjects = () => {
   });
 };
 
+const resolvePromises = async (promise) => {
+  let val;
+
+  if (promise === undefined) {
+    val = await Promise.resolve(promise).then((collections) => {
+      return collections;
+    });
+    console.log(val, "<-- val if statement");
+    return val;
+  }
+
+  val = await Promise.all(promise).then((collections) => {
+    return collections;
+  });
+
+  console.log(val, "<-- val");
+  return val;
+};
+
+const getCollections = async () => {
+
+  return new Promise ( async (resolve, reject) => {
+    let collectionPromise = await connection.db
+    .listCollections()
+    .toArray((err, collections) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log(collections);
+      return collections;
+    });
+  })
+  
+};
+
+module.exports.resolvePromises = resolvePromises;
+module.exports.getCollections = getCollections;
 module.exports.Check_If_File_And_Table_Is_Valid = Check_If_File_And_Table_Is_Valid;
 module.exports.upload = upload;
 module.exports.findProjects = findProjects;

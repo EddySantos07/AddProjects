@@ -10,6 +10,9 @@ require("dotenv").config();
 const { upload } = require("./mongoose");
 const { Check_If_File_And_Table_Is_Valid } = require("./mongoose");
 const { findProjects } = require("./mongoose");
+const { getCollections } = require('./mongoose');
+const { resolvePromises } = require('./mongoose');
+
 //
 const app = express();
 
@@ -65,7 +68,11 @@ app.post("/validationForm", upload.single("file"), (req, res) => {
 
 app.get("/GetAllProjects", async (req, res) => {
   try {
-    let areThereProjects = await findProjects();
+    // let areThereProjects = await findProjects();
+    let getCollectionsResult = await getCollections();
+    let resolvedGetCollections = await resolvePromises(getCollectionsResult);
+
+    console.log(resolvedGetCollections, 'resolved collections');
   } catch (err) {
     console.log(err);
   }
