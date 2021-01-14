@@ -66,19 +66,20 @@ app.post("/validationForm", upload.single("file"), (req, res) => {
 
 });
 
-app.get("/GetAllProjects", async (req, res) => {
+app.get("/GetAllProjectCollections", async (req, res) => {
+
   try {
     // let areThereProjects = await findProjects();
     let getCollectionsResult = await getCollections();
     let resolvedGetCollections = await resolvePromises(getCollectionsResult);
 
-    console.log(resolvedGetCollections, 'resolved collections');
+    console.log(resolvedGetCollections, 'resolved get collections');
+
+    res.send( resolvedGetCollections );
   } catch (err) {
     console.log(err);
   }
-  req.body.test = "test";
-  res.send(req.body);
-  res.end();
+  
 });
 
 /////////////////////

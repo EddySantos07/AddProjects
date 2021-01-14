@@ -146,7 +146,7 @@ const resolvePromises = async (promise) => {
     val = await Promise.resolve(promise).then((collections) => {
       return collections;
     });
-    console.log(val, "<-- val if statement");
+
     return val;
   }
 
@@ -154,7 +154,6 @@ const resolvePromises = async (promise) => {
     return collections;
   });
 
-  console.log(val, "<-- val");
   return val;
 };
 
@@ -175,7 +174,8 @@ const getCollections = async () => {
 
     })
 
-    console.log(collectionPromise)
+    // console.log(collectionPromise)
+    return collectionPromise
 
   } catch (err) {
     console.log(err);
