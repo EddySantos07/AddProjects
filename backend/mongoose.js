@@ -160,17 +160,26 @@ const resolvePromises = async (promise) => {
 
 const getCollections = async () => {
 
-  return new Promise ( async (resolve, reject) => {
-    let collectionPromise = await connection.db
-    .listCollections()
-    .toArray((err, collections) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(collections);
-      return collections;
-    });
-  })
+  try {
+    let collectionPromise = await new Promise ( (resolve, reject) => {
+      connection.db
+      .listCollections()
+      .toArray(async (err, collections) => {
+        if (err) {
+          console.log(err);
+          return reject(err)
+        }
+  
+        return resolve(collections);
+      });
+
+    })
+
+    console.log(collectionPromise)
+
+  } catch (err) {
+    console.log(err);
+  }
   
 };
 
