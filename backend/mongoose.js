@@ -6,6 +6,7 @@ const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage");
 const Grid = require("gridfs-stream");
 const { table } = require("console");
+const { resolve } = require("path");
 
 const mongoURI = `mongodb+srv://Eddy:${process.env.mongoURIPass}@showcase.jaglz.mongodb.net/${process.env.mongoURIDBName}?retryWrites=true&w=majority`;
 
@@ -158,31 +159,64 @@ const resolvePromises = async (promise) => {
 };
 
 const getCollections = async () => {
-
   try {
-    let collectionPromise = await new Promise ( (resolve, reject) => {
-      connection.db
-      .listCollections()
-      .toArray(async (err, collections) => {
+    let collectionPromise = await new Promise((resolve, reject) => {
+      connection.db.listCollections().toArray(async (err, collections) => {
         if (err) {
           console.log(err);
-          return reject(err)
+          return reject(err);
         }
-  
+
         return resolve(collections);
       });
-
-    })
+    });
 
     // console.log(collectionPromise)
-    return collectionPromise
+    return collectionPromise;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getDocumentsFromCollections = async (collection) => {
+  try {
+    console.log("in get docs from colecs");
+
+    let collectionName = collection.name;
+
+    let Get_Collection_Promise = await new Promise((resolve, reject) => {
+      connection.db.collection(collectionName, async (err, collection) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(collection);
+      });
+    });
+
+    let Get_Document_Promise = await new Promise((resolve, reject) => {
+      Get_Collection_Promise.find({}).toArray((err, data) => {
+        // console.log(data, "collections data"); // data printed in console
+        if (err) {
+          return reject(err);
+        }
+
+        data.unshift({collectionName})
+        return resolve(data);
+      });
+    });
+
+    console.log("after promise ");
+    console.log(Get_Document_Promise);
+
+    return Get_Document_Promise
 
   } catch (err) {
     console.log(err);
   }
-  
 };
 
+module.exports.getDocumentsFromCollections = getDocumentsFromCollections;
 module.exports.resolvePromises = resolvePromises;
 module.exports.getCollections = getCollections;
 module.exports.Check_If_File_And_Table_Is_Valid = Check_If_File_And_Table_Is_Valid;
