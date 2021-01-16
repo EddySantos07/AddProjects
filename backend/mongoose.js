@@ -21,14 +21,20 @@ const connection = mongoose.connection;
 
 //init gfs
 let gfs;
+let gridFSBucket;
+
 
 // when our connection is opened set gfs to Grid
 connection.once("open", () => {
   //initialized our stream
   gfs = Grid(connection.db, mongoose.mongo);
 
+  // gridFSBucket = new mongoose.mongo.GridFSBucket(connection.db , {
+  //   bucketName: 'uploads'
+  // });
+
   // specify what we want to use for a collection name
-  gfs.collection("uploads");
+  // gfs.collection("uploads");
   console.log("connected!");
 });
 
@@ -179,7 +185,6 @@ const getCollections = async () => {
 
 const getDocumentsFromCollections = async (collection) => {
   try {
-
     let collectionName = collection.name;
 
     let Get_Collection_Promise = await new Promise((resolve, reject) => {
@@ -209,6 +214,55 @@ const getDocumentsFromCollections = async (collection) => {
   }
 };
 
+const findImg = async (fileName, collection) => {
+  //specify our collection so it doesnt defualt a collection and return null
+  gfs.collection(collection);
+
+  let fileResult = await new Promise((resolve, reject) => {
+    gfs.files.findOne({ filename: fileName }, (err, file) => {
+      // console.log(file, "filee");
+      // const readStream = gfs.createReadStream(file.filename);
+      // console.log(gfs.files.find({}))
+      // console.log(file)
+      return resolve(file.filename);
+    });
+  });
+
+  console.log(fileResult, "this is file result");
+  return fileResult;
+};
+
+const imageFileGetReq = async (req, res) => {
+  try {
+    let fileName = req.params.filename;
+    let collection = req.params.collection;
+
+    //remove the .files extension from collection so gfs can add the .files extension and avoid bugs
+    collection = collection.slice(0, -6);
+
+    let fileResult = await findImg(fileName, collection);
+
+    console.log(fileResult, "file result?");
+    // console.log(gridFSBucket.openDownloadStreamByName(fileResult));
+
+    // gfs.collection(collection);
+
+    gridFSBucket = new mongoose.mongo.GridFSBucket(connection.db , {
+      bucketName: collection
+    });
+
+    const readStream = gridFSBucket.openDownloadStreamByName(fileResult)
+    // .pipe()
+    readStream.pipe(res)
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+module.exports.imageFileGetReq = imageFileGetReq;
+module.exports.gfs = gfs;
+module.exports.findImg = findImg;
 module.exports.getDocumentsFromCollections = getDocumentsFromCollections;
 module.exports.resolvePromises = resolvePromises;
 module.exports.getCollections = getCollections;

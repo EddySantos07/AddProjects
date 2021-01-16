@@ -14,7 +14,7 @@ const IndividualProjectPicData = ({ singleProjectData }) => {
 
       return (
         <div className='singleProjectContainer'>
-          <img src={fileName} />
+          <img src={`image/${fileName}-${collectionName}`} />
         </div>
       )
 

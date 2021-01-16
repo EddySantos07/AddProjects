@@ -13,6 +13,9 @@ const { findProjects } = require("./mongoose");
 const { getCollections } = require("./mongoose");
 const { resolvePromises } = require("./mongoose");
 const { getDocumentsFromCollections } = require("./mongoose");
+const { findImg } = require('./mongoose');
+const { imageFileGetReq } = require('./mongoose');
+
 
 //
 const app = express();
@@ -108,11 +111,7 @@ app.put("/GetImagesFromCollections", async (req, res) => {
 });
 
 
-app.get( '/file/:filename' , (req, res ) => {
-
-  
-
-})
+app.get( '/image/:filename-:collection' , imageFileGetReq);
 
 
 /////////////////////
