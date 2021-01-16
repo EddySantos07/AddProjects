@@ -64,7 +64,7 @@ app.post("/validationForm", upload.single("file"), (req, res) => {
 
 app.get("/GetAllProjectCollections", async (req, res) => {
   try {
-    // let areThereProjects = await findProjects();
+
     let getCollectionsResult = await getCollections();
     let resolvedGetCollections = await resolvePromises(getCollectionsResult);
 
@@ -76,8 +76,6 @@ app.get("/GetAllProjectCollections", async (req, res) => {
 
 app.put("/GetImagesFromCollections", async (req, res) => {
   try {
-    console.log("called from Get images");
-
     let collectionsData = req.body.collections;
 
     /*  Reading in parallel  */
@@ -92,7 +90,7 @@ app.put("/GetImagesFromCollections", async (req, res) => {
 
     /* -----------  https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
 
-    ------------------  Reading in sequence
+    ------------------  Reading in sequence 
     let result = []; 
 
     for (let i = 0; i < collectionsData.length; i++) {
@@ -102,17 +100,19 @@ app.put("/GetImagesFromCollections", async (req, res) => {
 
     */
 
-    console.log("after calculations");
+    res.send(collectionDataPromise);
 
-    console.log(
-      // collectionDataPromise,
-      result,
-      "awaited collection data promise! after calculations"
-    );
-    res.end();
   } catch (err) {
     console.log(err);
   }
 });
+
+
+app.get( '/file/:filename' , (req, res ) => {
+
+  
+
+})
+
 
 /////////////////////

@@ -4,7 +4,7 @@ import axios from "axios";
 import IndividualProjects from "./IndividualProjects";
 
 const DisplayAllProjects = () => {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState();
 
   async function getImagesFromCollections(collections) {
     try {
@@ -14,12 +14,14 @@ const DisplayAllProjects = () => {
         })
         .then((data) => {
           console.log(data, "after get images from collection route");
+
+          let collectionData = data.data;
+
+          setProjects(collectionData);
         })
         .catch((err) => {
           console.log(err);
         });
-
-      console.log(collectionImgs);
     } catch (err) {
       console.log(err);
     }
@@ -34,6 +36,8 @@ const DisplayAllProjects = () => {
 
           let collectionsArr = data.data;
 
+          //do something if collectionsArr is undefined || empty
+
           let filteredCollectionsArr = await collectionsArr.filter(
             (collection) => {
               let collectionName = collection.name;
@@ -47,11 +51,11 @@ const DisplayAllProjects = () => {
             }
           );
 
-          console.log(filteredCollectionsArr);
-
           let getImagesFromCollectionsRes = await getImagesFromCollections(
             filteredCollectionsArr
           );
+
+
         } catch (err) {
           console.log(err);
         }
@@ -59,11 +63,13 @@ const DisplayAllProjects = () => {
       .catch((err) => {
         console.log(err);
       });
-  });
+
+    //stop any infinite loops https://stackoverflow.com/questions/53070970/infinite-loop-in-useeffectÎ
+  }, []);
 
   return (
     <div className="DisplayAllProjectsContainer">
-      <IndividualProjects />
+      <IndividualProjects allProjects={projects} />
     </div>
   );
 };

@@ -113,7 +113,7 @@ const fileFilter = (req, file, callBack) => {
   req.body.originalName = file.originalname;
   req.body.isPicture = true;
 
-  console.log("passed and going into db?");
+  console.log("passed and going into db");
   callBack(null, true);
 };
 
@@ -171,7 +171,6 @@ const getCollections = async () => {
       });
     });
 
-    // console.log(collectionPromise)
     return collectionPromise;
   } catch (err) {
     console.log(err);
@@ -180,7 +179,6 @@ const getCollections = async () => {
 
 const getDocumentsFromCollections = async (collection) => {
   try {
-    console.log("in get docs from colecs");
 
     let collectionName = collection.name;
 
@@ -196,21 +194,16 @@ const getDocumentsFromCollections = async (collection) => {
 
     let Get_Document_Promise = await new Promise((resolve, reject) => {
       Get_Collection_Promise.find({}).toArray((err, data) => {
-        // console.log(data, "collections data"); // data printed in console
         if (err) {
           return reject(err);
         }
 
-        data.unshift({collectionName})
+        data.unshift({ collectionName });
         return resolve(data);
       });
     });
 
-    console.log("after promise ");
-    console.log(Get_Document_Promise);
-
-    return Get_Document_Promise
-
+    return Get_Document_Promise;
   } catch (err) {
     console.log(err);
   }
