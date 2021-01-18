@@ -19,7 +19,7 @@ const config = {
         filename: "bundle.js",
     },
 
-    resolve: { extensions: [".mjs", ".js", ".jsx", ".css"] },
+    resolve: { extensions: [".mjs", ".js", ".jsx", ".css",".scss"] },
 
     module: {
         rules: [
@@ -33,9 +33,19 @@ const config = {
             {
                 test: /\.css$/,
                 loader: 'style-loader'
-            }, {
+            },
+            {
                 test: /\.css$/,
                 loader: 'css-loader',
+            },
+            {
+                test:/\.scss$/,
+                use: [
+                    
+                    "style-loader", // 3) injects styles into dom
+                    "css-loader", // 2) turn css into commonjs
+                    "sass-loader", // turns scss into css,
+                ]
             }
 
         ]

@@ -54,8 +54,6 @@ const DisplayAllProjects = () => {
           let getImagesFromCollectionsRes = await getImagesFromCollections(
             filteredCollectionsArr
           );
-
-
         } catch (err) {
           console.log(err);
         }
@@ -67,11 +65,7 @@ const DisplayAllProjects = () => {
     //stop any infinite loops https://stackoverflow.com/questions/53070970/infinite-loop-in-useeffectÎ
   }, []);
 
-  return (
-    <div className="DisplayAllProjectsContainer">
-      <IndividualProjects allProjects={projects} />
-    </div>
-  );
+  return <IndividualProjects allProjects={projects} />;
 };
 
 export default DisplayAllProjects;

@@ -13,8 +13,6 @@ const AppTitle = () => {
           </div>
         </div>
       </div>
-
-      <DisplayAllProjects/>
     </>
   );
 };

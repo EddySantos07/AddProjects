@@ -23,7 +23,6 @@ const connection = mongoose.connection;
 let gfs;
 let gridFSBucket;
 
-
 // when our connection is opened set gfs to Grid
 connection.once("open", () => {
   //initialized our stream
@@ -234,6 +233,7 @@ const findImg = async (fileName, collection) => {
 
 const imageFileGetReq = async (req, res) => {
   try {
+    
     let fileName = req.params.filename;
     let collection = req.params.collection;
 
@@ -242,23 +242,17 @@ const imageFileGetReq = async (req, res) => {
 
     let fileResult = await findImg(fileName, collection);
 
-    console.log(fileResult, "file result?");
-    // console.log(gridFSBucket.openDownloadStreamByName(fileResult));
-
-    // gfs.collection(collection);
-
-    gridFSBucket = new mongoose.mongo.GridFSBucket(connection.db , {
-      bucketName: collection
+    gridFSBucket = new mongoose.mongo.GridFSBucket(connection.db, {
+      bucketName: collection,
     });
 
-    const readStream = gridFSBucket.openDownloadStreamByName(fileResult)
-    // .pipe()
-    readStream.pipe(res)
+    const readStream = gridFSBucket.openDownloadStreamByName(fileResult);
+    readStream.pipe(res);
+
   } catch (err) {
     console.log(err);
   }
 };
-
 
 module.exports.imageFileGetReq = imageFileGetReq;
 module.exports.gfs = gfs;
