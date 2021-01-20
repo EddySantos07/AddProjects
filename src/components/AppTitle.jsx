@@ -8,7 +8,7 @@ const AppTitle = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-6 m-auto ">
-            <h1 className="text-center display-4 my-4"> Mongo File Uploads </h1>
+            <h1 className="text-center display-4 my-4 mainTitle"> Mongo File Uploads </h1>
             <UploaderForm />
           </div>
         </div>

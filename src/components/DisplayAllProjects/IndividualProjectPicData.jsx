@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from "swiper";
+import SwiperCore , { Navigation, Pagination, Controller, Thumbs } from "swiper";
 
 // Import Swiper styles
-// import "swiper/bundle";
-// import 'swiper/swiper-bundle.css';
+// import "swiper/swiper-bundle.css";
+import 'swiper/swiper.scss';
+import "../../../dist/styles.css";
+
+SwiperCore.use([Navigation, Pagination, Controller, Thumbs]);
 
 const IndividualProjectPicData = ({ singleProjectData }) => {
   let collectionName = singleProjectData[0].collectionName;
@@ -22,7 +25,7 @@ const IndividualProjectPicData = ({ singleProjectData }) => {
         let fileName = documentData.filename;
 
         return (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={`slide-${index}`} tag="li" >
             <img
               src={`image/${fileName}-${collectionName}`}
               className="imgSwiperSlide"
