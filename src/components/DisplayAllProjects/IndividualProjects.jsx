@@ -56,7 +56,7 @@ const IndividualProjects = ({ allProjects }) => {
             <SwiperSlide className="background-image">
               <img
                 src={`image/${fileName}-${collectionName}`}
-                className="imgSliderSwpr "
+                className="imgSliderSwpr img"
               />
             </SwiperSlide>
           );
@@ -70,29 +70,31 @@ const IndividualProjects = ({ allProjects }) => {
     <>
       <Swiper
         tag="section"
-
         id="main"
-        slidesPerView={1}
-        spaceBetween={100}
-        navigation={{
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        }}
-        pagination={{ el: ".swiper-pagination" }}
-        pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
+        effect="coverflow"
         grabCursor={true}
         centeredSlides={true}
         slidesPerView={"auto"}
-        effect="coverflow"
         coverflowEffect={{
-          rotate: 30,
+          rotate: 20,
           stretch: 0,
-          depth: 100,
+          depth: 200,
           modifier: 1,
           slideShadows: true,
         }}
+
         loop={true}
+
+        autoplay= {{
+          delay: 1500,
+          disableOnInteraction: false,
+        }}
+
+        navigation={{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }}
+
       >
         {slides}
       </Swiper>
