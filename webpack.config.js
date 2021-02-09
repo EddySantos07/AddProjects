@@ -8,7 +8,6 @@ const config = {
   /*  entry is where to enter and find our file 
     output is where to bundle everything and put it into
     resolve these extensions so we dont have to teddiouslu have to write it out
-    
     */
 
   entry: "./src/index.js",

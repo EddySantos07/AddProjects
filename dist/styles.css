@@ -18,11 +18,25 @@ body {
   color: white;
 }
 
-.swiper-container {
+/* .containerForm {
+  margin: auto;
   width: 100%;
+  padding: 20px;
+}
+.row {
+  margin: auto;
+  width: 500px;
+  padding: 20px;
+} */
+
+.swiper-container {
+  position: absolute;
+  width: 100%;
+  left: 0;
   height: 500px;
-  padding-top: 120px;
-  padding-bottom: 200px;
+  margin-top: 200px;
+  padding-top:100px ;
+  padding-bottom: 600px;
 }
 
 .swiper-slide {

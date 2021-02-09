@@ -65,7 +65,7 @@ const DisplayAllProjects = () => {
     //stop any infinite loops https://stackoverflow.com/questions/53070970/infinite-loop-in-useeffectÎ
   }, []);
 
-  return <IndividualProjects allProjects={projects} />;
+  return < IndividualProjects allProjects={projects} />;
 };
 
 export default DisplayAllProjects;
